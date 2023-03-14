@@ -1,5 +1,8 @@
 const { ethers } = require("ethers");
 const fs = require("fs-extra");
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 const abi = fs.readFileSync("./SimpleStorage_sol_SimpleStorage.abi", "utf-8");
 const binary = fs.readFileSync(
@@ -9,9 +12,10 @@ const binary = fs.readFileSync(
 
 const main = async () => {
   try {
-    const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
+    const provider = new ethers.JsonRpcProvider(process.env.PROVIDER_URL);
+    // console.log(provider)
     const wallet = new ethers.Wallet(
-      "0x06949fb218237bd72b2d7e7d822a0f8ce5ab8698368d52249df087940c50d88c",
+      process.env.WALLET_KEY,
       provider
     );
     const contractFractory = new ethers.ContractFactory(abi, binary, wallet);
